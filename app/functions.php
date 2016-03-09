@@ -25,19 +25,10 @@ function e()
 /**
  * Translate a number
  *
+ * @param  mixed $value
  * @return string
  */
 function n($value)
 {
     return Translator::getInstance()->number($value);
-}
-
-/**
- * Translate a date
- *
- * @return string
- */
-function dt($format, $timestamp)
-{
-    return Translator::getInstance()->datetime($format, $timestamp);
 }

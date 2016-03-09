@@ -24,13 +24,13 @@
         <?= $this->form->select('owner_id', $owners, $values, $errors) ?>
     </div>
 
-    <?php if ($this->user->hasProjectAccess('project', 'create', $project['id'])): ?>
+    <?php if ($this->user->hasProjectAccess('ProjectCreation', 'create', $project['id'])): ?>
         <hr>
         <?= $this->form->checkbox('is_private', t('Private project'), 1, $project['is_private'] == 1) ?>
         <p class="form-help"><?= t('Private projects do not have users and groups management.') ?></p>
     <?php endif ?>
 
     <div class="form-actions">
-        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
+        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
     </div>
 </form>

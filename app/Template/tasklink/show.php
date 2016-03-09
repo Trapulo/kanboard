@@ -1,15 +1,23 @@
-<?php if (! empty($links)): ?>
+<?php if (isset($show_title)): ?>
+    <div class="task-show-title color-<?= $task['color_id'] ?>">
+        <h2><?= $this->text->e($task['title']) ?></h2>
+    </div>
+<?php endif ?>
+
 <div class="page-header">
-    <h2><?= t('Links') ?></h2>
+    <h2><?= t('Internal links') ?></h2>
 </div>
-<table id="links">
+<?php if (empty($links)): ?>
+    <p class="alert"><?= t('There is no internal link for the moment.') ?></p>
+<?php else: ?>
+<table id="links" class="table-small table-stripped">
     <tr>
         <th class="column-20"><?= t('Label') ?></th>
         <th class="column-30"><?= t('Task') ?></th>
         <th class="column-20"><?= t('Project') ?></th>
         <th><?= t('Column') ?></th>
         <th><?= t('Assignee') ?></th>
-        <?php if ($editable): ?>
+        <?php if ($editable && $this->user->hasProjectAccess('Tasklink', 'edit', $task['project_id'])): ?>
             <th class="column-5"><?= t('Action') ?></th>
         <?php endif ?>
     </tr>
@@ -25,7 +33,7 @@
             <td>
                 <?php if ($is_public): ?>
                     <?= $this->url->link(
-                        $this->e('#'.$link['task_id'].' '.$link['title']),
+                        $this->text->e('#'.$link['task_id'].' '.$link['title']),
                         'task',
                         'readonly',
                         array('task_id' => $link['task_id'], 'token' => $project['token']),
@@ -34,7 +42,7 @@
                     ) ?>
                 <?php else: ?>
                     <?= $this->url->link(
-                        $this->e('#'.$link['task_id'].' '.$link['title']),
+                        $this->text->e('#'.$link['task_id'].' '.$link['title']),
                         'task',
                         'show',
                         array('task_id' => $link['task_id'], 'project_id' => $link['project_id']),
@@ -43,28 +51,28 @@
                     ) ?>
                 <?php endif ?>
 
-                <br/>
+                <br>
 
                 <?php if (! empty($link['task_time_spent'])): ?>
-                    <strong><?= $this->e($link['task_time_spent']).'h' ?></strong> <?= t('spent') ?>
+                    <strong><?= $this->text->e($link['task_time_spent']).'h' ?></strong> <?= t('spent') ?>
                 <?php endif ?>
 
                 <?php if (! empty($link['task_time_estimated'])): ?>
-                    <strong><?= $this->e($link['task_time_estimated']).'h' ?></strong> <?= t('estimated') ?>
+                    <strong><?= $this->text->e($link['task_time_estimated']).'h' ?></strong> <?= t('estimated') ?>
                 <?php endif ?>
             </td>
-            <td><?= $this->e($link['project_name']) ?></td>
-            <td><?= $this->e($link['column_title']) ?></td>
+            <td><?= $this->text->e($link['project_name']) ?></td>
+            <td><?= $this->text->e($link['column_title']) ?></td>
             <td>
                 <?php if (! empty($link['task_assignee_username'])): ?>
                     <?php if ($editable): ?>
-                        <?= $this->url->link($this->e($link['task_assignee_name'] ?: $link['task_assignee_username']), 'user', 'show', array('user_id' => $link['task_assignee_id'])) ?>
+                        <?= $this->url->link($this->text->e($link['task_assignee_name'] ?: $link['task_assignee_username']), 'user', 'show', array('user_id' => $link['task_assignee_id'])) ?>
                     <?php else: ?>
-                        <?= $this->e($link['task_assignee_name'] ?: $link['task_assignee_username']) ?>
+                        <?= $this->text->e($link['task_assignee_name'] ?: $link['task_assignee_username']) ?>
                     <?php endif ?>
                 <?php endif ?>
             </td>
-            <?php if ($editable): ?>
+            <?php if ($editable && $this->user->hasProjectAccess('Tasklink', 'edit', $task['project_id'])): ?>
             <td>
                 <div class="dropdown">
                 <a href="#" class="dropdown-menu dropdown-menu-link-icon"><i class="fa fa-cog fa-fw"></i><i class="fa fa-caret-down"></i></a>
@@ -102,7 +110,7 @@
             ),
             'autocomplete') ?>
 
-        <input type="submit" value="<?= t('Add') ?>" class="btn btn-blue"/>
+        <button type="submit" class="btn btn-blue"><?= t('Add') ?></button>
     </form>
 <?php endif ?>
 

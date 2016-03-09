@@ -13,6 +13,7 @@ Plugin creators should specify explicitly the compatible versions of Kanboard. I
 - [Override default application behaviors](plugin-overrides.markdown)
 - [Add schema migrations for plugins](plugin-schema-migrations.markdown)
 - [Custom routes](plugin-routes.markdown)
+- [Add helpers](plugin-helpers.markdown)
 - [Add mail transports](plugin-mail-transports.markdown)
 - [Add notification types](plugin-notifications.markdown)
 - [Add automatic actions](plugin-automatic-actions.markdown)
@@ -21,6 +22,7 @@ Plugin creators should specify explicitly the compatible versions of Kanboard. I
 - [Authentication plugin registration](plugin-authentication.markdown)
 - [Authorization Architecture](plugin-authorization-architecture.markdown)
 - [Custom Group Providers](plugin-group-provider.markdown)
+- [External Link Providers](plugin-external-link.markdown)
 - [LDAP client](plugin-ldap-client.markdown)
 
 Examples of plugins

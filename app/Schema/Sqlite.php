@@ -6,7 +6,54 @@ use Kanboard\Core\Security\Token;
 use Kanboard\Core\Security\Role;
 use PDO;
 
-const VERSION = 95;
+const VERSION = 99;
+
+function version_99(PDO $pdo)
+{
+    $pdo->exec("UPDATE project_activities SET event_name='task.file.create' WHERE event_name='file.create'");
+}
+
+function version_98(PDO $pdo)
+{
+    $pdo->exec('ALTER TABLE files RENAME TO task_has_files');
+
+    $pdo->exec("
+        CREATE TABLE project_has_files (
+            id INTEGER PRIMARY KEY,
+            project_id INTEGER NOT NULL,
+            name TEXT COLLATE NOCASE NOT NULL,
+            path TEXT NOT NULL,
+            is_image INTEGER DEFAULT 0,
+            size INTEGER DEFAULT 0 NOT NULL,
+            user_id INTEGER DEFAULT 0 NOT NULL,
+            date INTEGER DEFAULT 0 NOT NULL,
+            FOREIGN KEY(project_id) REFERENCES projects(id) ON DELETE CASCADE
+        )"
+    );
+}
+
+function version_97(PDO $pdo)
+{
+    $pdo->exec("ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1");
+}
+
+function version_96(PDO $pdo)
+{
+    $pdo->exec("
+        CREATE TABLE task_has_external_links (
+            id INTEGER PRIMARY KEY,
+            link_type TEXT NOT NULL,
+            dependency TEXT NOT NULL,
+            title TEXT NOT NULL,
+            url TEXT NOT NULL,
+            date_creation INTEGER NOT NULL,
+            date_modification INTEGER NOT NULL,
+            task_id INTEGER NOT NULL,
+            creator_id INTEGER DEFAULT 0,
+            FOREIGN KEY(task_id) REFERENCES tasks(id) ON DELETE CASCADE
+        )
+    ");
+}
 
 function version_95(PDO $pdo)
 {
